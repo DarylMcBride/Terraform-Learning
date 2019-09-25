@@ -1,0 +1,27 @@
+1.interpolation
+#variables
+${var.name}
+
+#map key value
+${var.name["key"]}
+
+#list index value
+${var.name[index]}
+
+#resource attributes
+$var.name.attributes
+
+#data sources
+${data.type.name.attributes}
+
+#conditionals
+${condition ? true_expression : false_expression}
+
+2. meta-parameters
+provider= "google.west"
+depends_on = ["google_compute_instance.server"]
+
+3. provisioners 
+provisioner "local-exec" {
+    command = "echo disk ${count.index}: ${self.self_link} >> disk-urls.txt"
+}
