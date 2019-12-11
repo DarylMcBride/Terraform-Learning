@@ -1,0 +1,59 @@
+###version
+terraform --version
+
+###init
+terraform init
+
+###init no input
+terraform init -input=false
+
+###change backend config during init
+terraform init -backend-config=cfg/s3.dev.tf -reconfigure
+#used to tell terraform not to copy the existing state to the
+#new remote location
+
+###get
+terraform get -update=true
+#used when some modules are defined
+
+###plan
+terraform plan -out plan.out
+
+###apply
+terraform apply
+terraform apply plan.out
+terraform apply -auto-approve
+#apply and define new variable value
+terraform apply -auto-approve var tags-repository_url=${GIT_URL}
+#apply to only one module 
+terraform apply -target=module.s3
+
+###State
+#pull remote state in a local copy
+terraform state pull > terraform.tfstate
+terraform state push
+#tell terraform you moved a resource in a module
+terraform state mv aws_iam_role.role1 module.mymodule
+#import existing resource in your infrastructure provider
+terraform import aws_iam_policy.elastic_post arn:aws:iam::12345678:policy/elastic_post
+
+###workspaces
+terraform workspace new dev
+terraform workspace select dev
+terraform workspace list
+terraform workspace show
+
+###Destroy
+terraform destroy
+#deletion plan
+terraform plan -destroy
+#targeted
+terraform destroy -target aws_s3_bucked.my_bucket
+
+###Debug
+#testing interpolations before using them
+echo "aws_iam_user.notif.arn" | terraform console arn:aws:iam::123456789:user/notif
+#graph
+terraform graph | dot -Tpng > graph.png
+#providers
+terraform providers

@@ -1,0 +1,8 @@
+terraform plan
+terraform apply
+terraform show
+terraform destroy
+
+
+
+export TF_LOG=INFO
